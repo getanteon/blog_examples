@@ -104,8 +104,14 @@ urlpatterns = [
 ]
 ```
 
-## Run gunicorn webserver
+## Run gunicorn webserver with 1 worker
 
 ```bash
 gunicorn --workers 1 --bind 0.0.0.0:9018 throttling.wsgi
+```
+
+## Run gunicorn webserver with 6 workers
+
+```bash
+gunicorn --workers 6 --bind 0.0.0.0:9018 throttling.wsgi
 ```

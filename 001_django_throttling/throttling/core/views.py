@@ -10,4 +10,4 @@ class DjangoThrottlingAPIView(GenericAPIView):
     throttle_classes = [throttling.ConcurrencyThrottleApiKey]
 
     def get(self, request):
-        return Response("okk", status=status.HTTP_200_OK)
+        return Response("ok", status=status.HTTP_200_OK)
