@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: throttling-deployment
+  labels:
+    app: throttling
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: throttling
+  template:
+    metadata:
+      labels:
+        app: throttling
+        appType: ddosify
+    spec:
+      containers:
+      - name: throttling
+        image: django_throttling:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 9018
+          name: throttling-port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: throttling-service
+spec:
+  type: NodePort
+  selector:
+    app: throttling
+  ports:
+  - protocol: TCP
+    port: 9018
+    targetPort: 9018
+    nodePort: 31534
