@@ -47,6 +47,15 @@ REST_FRAMEWORK = {
     ),
 }
 
+CACHES = {
+    'alternate': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        # 'LOCATION': f'redis://localhost:31514',
+        'LOCATION': f'redis://redis-service:6379',
+        
+    }
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

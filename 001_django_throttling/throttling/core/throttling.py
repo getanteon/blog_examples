@@ -1,6 +1,8 @@
 from rest_framework.throttling import SimpleRateThrottle
+from django.core.cache import caches
 
 class ConcurrencyThrottleApiKey(SimpleRateThrottle):
+    cache = caches['alternate']
     rate = "1/s"
 
     def get_cache_key(self, request, view):
