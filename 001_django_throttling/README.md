@@ -31,6 +31,7 @@ pip3 install -r requirements.txt
 
 ```bash
 django-admin startproject throttling
+cd throttling
 python3 manage.py startapp core
 ```
 
