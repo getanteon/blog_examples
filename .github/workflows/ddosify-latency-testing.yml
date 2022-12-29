@@ -1,0 +1,21 @@
+name: "Ddosify Latency Testing"
+
+on:
+  # schedule:
+  #   - cron:  '0 * * * *'  # Every one hour. The shortest interval is once every 5 minutes
+  workflow_dispatch:
+
+jobs:
+  latency-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Ddosify Latency Test
+      uses: ddosify/ddosify-latency-action@v1
+      # highlight-start
+      with:
+        api_key: ${{ secrets.DDOSIFY_API_KEY }}
+        target: "https://app.servdown.com"
+        locations: '["*"]'
+        failIf: "EU.*>50"
+      # highlight-end
