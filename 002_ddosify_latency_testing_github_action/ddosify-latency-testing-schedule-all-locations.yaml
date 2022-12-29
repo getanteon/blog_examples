@@ -1,0 +1,18 @@
+name: "Ddosify Latency Testing"
+
+on:
+  schedule:
+    - cron:  '0 * * * *'  # Every one hour. The shortest interval is once every 5 minutes
+
+jobs:
+  latency-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Ddosify Latency Test
+      uses: ddosify/ddosify-latency-action@v1
+      with:
+        api_key: ${{ secrets.DDOSIFY_API_KEY }}   # Store DDOSIFY_API_KEY as secret
+        target: "https://app.servdown.com"        # Target Endpoint for latency testing
+        locations: '["*"]'                        # (optional) All the cities
+        failIf: "EU.*>100"                        # (optional) If any of Europe (EU) city's latency is greater than 100ms, fail the pipeline 
