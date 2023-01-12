@@ -1,0 +1,49 @@
+{   
+    "iteration_count": 10,
+    "duration": 10,
+    "load_type": "linear",
+    "debug": true,
+    "env": {
+        "baseUrl": "https://testserver.ddosify.com/account",
+        "username": "{{_randomUserName}}",
+        "email": "{{_randomEmail}}",
+        "password": "{{_randomPassword}}"
+    },
+    "steps": [
+        {
+            "id": 1,
+            "name": "Register",
+            "url": "{{baseUrl}}/register/",
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "payload_file": "./register_payload.json",
+            "sleep": "1000-2500"
+        },
+        {
+            "id": 2,
+            "name": "Login",
+            "url": "{{baseUrl}}/login/",
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "payload_file": "./login_payload.json",
+            "sleep": "1000-2500",
+            "captureEnv": {
+                "access_token": {"from": "body", "jsonPath": "tokens.access"}
+            }
+        },
+        {
+            "id": 3,
+            "name": "Account",
+            "url": "{{baseUrl}}/user/",
+            "method": "GET",
+            "sleep": "1000-2500",
+            "headers": {
+                "Authorization": "Bearer {{access_token}}"
+            }
+        }
+    ]
+}
