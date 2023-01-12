@@ -1,8 +1,7 @@
 {   
-    "iteration_count": 10,
+    "iteration_count": 50,
     "duration": 10,
     "load_type": "linear",
-    "debug": true,
     "env": {
         "baseUrl": "https://testserver.ddosify.com/account",
         "username": "{{_randomUserName}}",
