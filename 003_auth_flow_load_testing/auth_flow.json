@@ -30,8 +30,8 @@
             },
             "payload_file": "./login_payload.json",
             "sleep": "1000-2500",
-            "captureEnv": {
-                "access_token": {"from": "body", "jsonPath": "tokens.access"}
+            "capture_env": {
+                "access_token": {"from": "body", "json_path": "tokens.access"}
             }
         },
         {
