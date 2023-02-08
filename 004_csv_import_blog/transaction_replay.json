@@ -1,0 +1,46 @@
+{
+    "iteration_count": 1000,
+    "duration": 60,
+    "load_type": "waved",
+    "env": {
+        "baseUrl": "https://testserver.ddosify.com/exchange/"
+    },
+    "data": {
+        "transactions": {
+            "path": "./test_data.csv",
+            "vars": {
+                "0": {
+                    "tag": "api_key"
+                },
+                "1": {
+                    "tag": "amount",
+                    "type": "float"
+                },
+                "2": {
+                    "tag": "base_currency"
+                },
+                "3": {
+                    "tag": "target_currency"
+                }
+            },
+            "delimiter": ",",
+            "allow_quota": false,
+            "order": "sequential",
+            "skip_first_line": false,
+            "skip_empty_line": true
+        }
+    },
+    "steps": [
+        {
+            "id": 1,
+            "name": "Exchange",
+            "url": "{{baseUrl}}",
+            "method": "POST",
+            "headers": {
+                "X-API-KEY": "{{data.transactions.api_key}}",
+                "Content-Type": "application/json"
+            },
+            "payload_file": "./exchange_body.json"
+        }
+    ]
+}

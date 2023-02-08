@@ -1,0 +1,5 @@
+{
+    "amount": "{{data.transactions.amount}}",
+	"base": "{{data.transactions.base_currency}}",
+	"target": "{{data.transactions.target_currency}}"
+}
