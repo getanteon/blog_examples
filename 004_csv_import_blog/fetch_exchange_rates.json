@@ -1,0 +1,20 @@
+{
+    "iteration_count": 1000,
+    "duration": 10,
+    "load_type": "incremental",
+    "env": {
+        "currencies":  ["AED","ARS","AUD","BGN","BHD","BRL",
+                        "CAD","CHF","CNY","DKK","DZD","EUR",
+                        "FKP","INR","JEP","JPY","KES","KWD",
+                        "KZT","MXN","NZD","RUB","SEK","SGD",
+                        "TRY","USD"],
+        "baseUrl": "https://testserver.ddosify.com/exchange_rate"
+    },
+    "steps": [
+        {
+            "id": 1,
+            "name": "Random Currency Fetch",
+            "url": "{{baseUrl}}/{{rand(currencies)}}/{{rand(currencies)}}/"
+        }
+    ]
+}
