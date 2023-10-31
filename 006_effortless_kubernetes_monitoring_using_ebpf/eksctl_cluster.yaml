@@ -1,0 +1,31 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: ddosify-k8s-test-blog
+  region: us-west-1
+vpc:
+  clusterEndpoints:
+    publicAccess: true
+    privateAccess: false
+
+managedNodeGroups:
+  - name: managed-ng-ddosify-k8s-test-blog
+    amiFamily: "AmazonLinux2"
+    instanceType: c5.large
+    minSize: 1
+    maxSize: 3
+    desiredCapacity: 2
+    volumeSize: 30
+    iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      withAddonPolicies:
+        ebs: true
+addons:
+- name: vpc-cni
+  serviceAccountRoleARN: arn:aws:iam::aws:policy/AmazonEKSCNIAccess
+- name: aws-ebs-csi-driver
+  serviceAccountRoleARN: arn:aws:iam::aws:policy/AmazonEKS_CSI_Driver
