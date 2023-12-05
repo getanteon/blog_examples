@@ -1,0 +1,2 @@
+
+> clang -target bpf -O2 -g -o tracker.o -c bpf.c
