@@ -30,17 +30,6 @@ func main() {
 	}
 	defer ef.Close()
 
-	// nm command can be used to get the symbols as well
-	// symbols, err := ef.Symbols()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// print the symbols
-	// for _, s := range symbols {
-	// 	log.Printf("%s: %x", s.Name, s.Value)
-	// }
-
 	ex, err := link.OpenExecutable(path)
 	if err != nil {
 		log.Fatal(err)
@@ -49,19 +38,6 @@ func main() {
 	coll, err := ebpf.LoadCollection("tracker.o")
 	if err != nil {
 		log.Fatal(err)
-	}
-
-	// _, err = ringbuf.NewReader(coll.Maps["greet_events"])
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	for x, prog := range coll.Programs {
-		log.Printf("PROG %s: %s", x, prog.Type)
-	}
-
-	for x, map2 := range coll.Maps {
-		log.Printf("MAP %s: %s", x, map2.String())
 	}
 
 	greetEvents, err := ringbuf.NewReader(coll.Maps["greet_params"])
@@ -89,5 +65,4 @@ func main() {
 
 	for {
 	}
-	// defer l.Close()
 }
