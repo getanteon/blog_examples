@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testserver-deployment
+  namespace: testserver
+  labels:
+    app: testserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: testserver
+  template:
+    metadata:
+      labels:
+        app: testserver
+    spec:
+      containers:
+      - name: testserver
+        image: ddosify/djangotestapp:hpa
+        command: ["/workspace/start_scripts/start_app.sh"]
+        imagePullPolicy: Always
+        envFrom:
+          - secretRef:
+              name: testserver-env
+        ports:
+        - containerPort: 8200
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "2048Mi"
+            cpu: "2000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: testserver-service
+  namespace: testserver
+spec:
+  selector:
+    app: testserver
+  ports:
+    - protocol: TCP
+      port: 8200
+      targetPort: 8200
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: postgres
+  name: postgres
+  namespace: testserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: postgres
+    spec:
+      containers:
+        - image: postgres:13.6
+          name: postgres
+          envFrom:
+            - secretRef:
+                name: testserver-env
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-data
+              subPath: postgres
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "4096Mi"
+              cpu: "4000m"
+      restartPolicy: Always
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-data
+
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: postgres
+  name: postgres
+  namespace: testserver
+spec:
+  ports:
+    - name: "5432"
+      port: 5432
+      targetPort: 5432
+  selector:
+    service: postgres
+status:
+  loadBalancer: {}
