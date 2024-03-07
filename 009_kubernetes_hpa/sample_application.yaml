@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: testserver
+  labels:
+    name: testserver
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testserver-deployment
+  namespace: testserver
+  labels:
+    app: testserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: testserver
+  template:
+    metadata:
+      labels:
+        app: testserver
+    spec:
+      containers:
+      - name: testserver
+        image: ddosify/djangotestapp:kubernetes-autoscaler-blog
+        command: ["/workspace/start_scripts/start_app.sh"]
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8200
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "2048Mi"
+            cpu: "2000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: testserver-service
+  namespace: testserver
+spec:
+  selector:
+    app: testserver
+  ports:
+    - protocol: TCP
+      port: 8200
+      targetPort: 8200
+  type: LoadBalancer
