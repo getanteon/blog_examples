@@ -24,3 +24,7 @@ In order to try it out locally:
   ```
   sudo cat /sys/kernel/debug/tracing/trace_pipe
   ```
+- To run performance evaluation, inside `/perf` directory run:
+  ```
+  go run measure.go
+  ```
