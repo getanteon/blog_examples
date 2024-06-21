@@ -1,5 +1,5 @@
-# redis-ebpf
-Redis Observability using eBPF
+# Redis eBPF
+This is a demo code, for showcasing Observability of the RESP protocol using eBPF. This code is inspired by Alaz, Kubernetes eBPF agent, developed by Anteon.
 
 In order to try it out locally:
 
@@ -11,7 +11,7 @@ In order to try it out locally:
   ```
 - Run the Redis Container using
   ```
-  docker run -d --name my-redis-stack -p 6379:6379  redis/redis-stack-server:latest
+  docker run --name redis-server -d --memory 4g --cpus 4 -p 6379:6379 redis
   ```
 - Run client inside `/test` using 
   ```
