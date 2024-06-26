@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose-local-db.yml
+    kompose.version: 1.26.1 (a9d05d509)
+  labels:
+    io.kompose.service: mysql-server
+  name: mysql-server
+spec:
+  type: ExternalName
+  externalName: petclinic.clua0w36hpqf.us-east-1.rds.amazonaws.com 
+# Change this line with the endpoint of your RDS.

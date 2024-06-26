@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -o petclinic_chart/templates
+    kompose.image-pull-secret: regcred
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: vets-service
+  name: vets-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      io.kompose.service: vets-service
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o petclinic_chart/templates
+        kompose.image-pull-secret: regcred
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: vets-service
+    spec:
+      containers:
+        - image: '{{ .Values.IMAGE_TAG_VETS_SERVICE }}'
+          name: vets-service
+          ports:
+            - containerPort: 8083
+          resources: {}
+      initContainers:
+        - name: init-discovery-server
+          image: busybox
+          command: ['sh', '-c', 'until nc -z discovery-server:8761; do echo waiting for discovery-server; sleep 2; done;']
+      imagePullSecrets:
+        - name: regcred
+      restartPolicy: Always
+status: {}
