@@ -1,0 +1,87 @@
+version: '3'
+services:
+  config-server:
+    image: "{{ .Values.IMAGE_TAG_CONFIG_SERVER }}"
+    ports:
+     - 8888:8888
+    labels:
+      kompose.image-pull-secret: "regcred"
+  discovery-server:
+    image: "{{ .Values.IMAGE_TAG_DISCOVERY_SERVER }}"
+    ports:
+     - 8761:8761
+    labels:
+      kompose.image-pull-secret: "regcred"
+  customers-service:
+    image: "{{ .Values.IMAGE_TAG_CUSTOMERS_SERVICE }}"
+    deploy:
+      replicas: 2
+    ports:
+    - 8081:8081
+    labels:
+      kompose.image-pull-secret: "regcred"
+  visits-service:
+    image: "{{ .Values.IMAGE_TAG_VISITS_SERVICE }}"
+    deploy:
+      replicas: 2
+    ports:
+     - 8082:8082
+    labels:
+      kompose.image-pull-secret: "regcred"
+  vets-service:
+    image: "{{ .Values.IMAGE_TAG_VETS_SERVICE }}"
+    deploy:
+      replicas: 2
+    ports:
+     - 8083:8083
+    labels:
+      kompose.image-pull-secret: "regcred"
+  api-gateway:
+    image: "{{ .Values.IMAGE_TAG_API_GATEWAY }}"
+    deploy:
+      replicas: 1
+    ports:
+     - 8080:8080
+    labels:
+      kompose.image-pull-secret: "regcred"
+      kompose.service.expose: "{{ .Values.DNS_NAME }}"
+      kompose.service.type: "nodeport"
+      kompose.service.nodeport.port: "30001"
+  tracing-server:
+    image: openzipkin/zipkin
+    environment:
+    - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -Djava.security.egd=file:/dev/./urandom
+    ports:
+     - 9411:9411
+  admin-server:
+    image: "{{ .Values.IMAGE_TAG_ADMIN_SERVER }}"
+    ports:
+     - 9090:9090
+    labels:
+      kompose.image-pull-secret: "regcred"
+  hystrix-dashboard:
+    image: "{{ .Values.IMAGE_TAG_HYSTRIX_DASHBOARD }}"
+    ports:
+     - 7979:7979
+    labels:
+      kompose.image-pull-secret: "regcred"
+  grafana-server:
+    image: "{{ .Values.IMAGE_TAG_GRAFANA_SERVICE }}"
+    ports:
+    - 3000:3000
+    labels:
+      kompose.image-pull-secret: "regcred"
+  prometheus-server:
+    image: "{{ .Values.IMAGE_TAG_PROMETHEUS_SERVICE }}"
+    ports:
+    - 9091:9090
+    labels:
+      kompose.image-pull-secret: "regcred"
+
+  mysql-server:
+    image: mysql:5.7.8
+    environment: 
+      MYSQL_ROOT_PASSWORD: petclinic
+      MYSQL_DATABASE: petclinic
+    ports:
+    - 3306:3306

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -o petclinic_chart/templates
+    kompose.image-pull-secret: regcred
+    kompose.service.expose: '{{ .Values.DNS_NAME }}'
+    kompose.service.nodeport.port: "30001"
+    kompose.service.type: nodeport
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: api-gateway
+  name: api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: api-gateway
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o petclinic_chart/templates
+        kompose.image-pull-secret: regcred
+        kompose.service.expose: '{{ .Values.DNS_NAME }}'
+        kompose.service.nodeport.port: "30001"
+        kompose.service.type: nodeport
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: api-gateway
+    spec:
+      containers:
+        - image: '{{ .Values.IMAGE_TAG_API_GATEWAY }}'
+          name: api-gateway
+          ports:
+            - containerPort: 8080
+          resources: {}
+      initContainers:
+        - name: init-discovery-server
+          image: busybox
+          command: ['sh', '-c', 'until nc -z discovery-server:8761; do echo waiting for discovery-server; sleep 2; done;']
+      imagePullSecrets:
+        - name: regcred
+      restartPolicy: Always
+status: {}

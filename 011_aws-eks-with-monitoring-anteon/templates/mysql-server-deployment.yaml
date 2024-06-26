@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -o petclinic_chart/templates
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mysql-server
+  name: mysql-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mysql-server
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o petclinic_chart/templates
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: mysql-server
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_DATABASE
+              value: petclinic
+            - name: MYSQL_ROOT_PASSWORD
+              value: petclinic
+          image: mysql:5.7.8
+          name: mysql-server
+          ports:
+            - containerPort: 3306
+          resources: {}
+      restartPolicy: Always
+status: {}
