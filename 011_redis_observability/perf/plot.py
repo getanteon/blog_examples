@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 
 # Latency values in microseconds
-operations = ['SET', 'UPDATE', 'DELETE', 'GET']
-latency_with_ebpf = [140.768, 140.303, 140.629, 69.858]
-latency_without_ebpf = [125.951, 126.011, 126.065, 62.689]
+operations = ['SET', 'UPDATE', 'DELETE', 'GET', 'PUBLISH']
+latency_with_ebpf = [140.768, 140.303, 140.629, 69.858, 140.077]
+latency_without_ebpf = [125.951, 126.011, 126.065, 62.689, 121.525]
 
 x = range(len(operations))
 

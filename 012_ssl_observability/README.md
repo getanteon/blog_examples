@@ -1,4 +1,13 @@
-# eBPF - Capturing SSL/TLS Plain Text Data Using uprobe
+# What Insights Can eBPF Provide into Real-Time SSL/TLS Encrypted Traffic and How?
+
+## Prerequisites
+
+Install dependencies using:
+```
+sudo apt install libbpf-dev llvm clang linux-tools-common gcc-multilib
+```
+
+## Run it
 
 - Run eBPF Program 
 

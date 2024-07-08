@@ -4,6 +4,7 @@ import (
     "context"
     "fmt"
     "log"
+    "time"
 
     "github.com/go-redis/redis/v8"
 )
@@ -70,6 +71,15 @@ func main() {
         log.Fatalf("Could not get hash fields: %v", err)
     }
     fmt.Printf("Fields in hash '%s': %v\n", hashKey, hashValues)
+
+    // Publish an event to a channel
+    channel := "events"
+    message := "Hello, Redis!"
+    err = rdb.Publish(ctx, channel, message).Err()
+    if err != nil {
+        log.Fatalf("Could not publish message: %v", err)
+    }
+    fmt.Printf("Published message to channel '%s': %s\n", channel, message)
 
     // Clean up the keys
     err = rdb.Del(ctx, key, listKey, hashKey).Err()

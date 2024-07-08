@@ -1,6 +1,15 @@
 # Redis eBPF
 This is a demo code, for showcasing Observability of the RESP protocol using eBPF. This code is inspired by Alaz, Kubernetes eBPF agent, developed by Anteon.
 
+## Prerequisites
+
+Install dependencies using:
+```
+sudo apt install libbpf-dev llvm clang linux-tools-common gcc-multilib
+```
+
+## Run it
+
 In order to try it out locally:
 
 - Run eBPF program using

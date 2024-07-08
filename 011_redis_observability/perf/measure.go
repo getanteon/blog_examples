@@ -23,8 +23,10 @@ func main() {
     key := "name"
     initialValue := "Ddosify"
     updatedValue := "Anteon"
+    channel := "events"
+    message := "Operation completed"
 
-    var totalSetTime, totalGetTime, totalUpdateTime, totalDelTime time.Duration
+    var totalSetTime, totalGetTime, totalUpdateTime, totalDelTime, totalPubTime time.Duration
     const repeat = 10000
 
     for i := 0; i < repeat; i++ {
@@ -68,10 +70,21 @@ func main() {
         if err != nil {
             log.Fatalf("Could not delete keys: %v", err)
         }
+
+        // PUBLISH message
+        start = time.Now()
+        err = rdb.Publish(ctx, channel, message).Err()
+        elapsed = time.Since(start)
+        totalPubTime += elapsed
+
+        if err != nil {
+            log.Fatalf("Could not publish message: %v", err)
+        }
     }
 
     fmt.Printf("Average SET latency: %v\n", totalSetTime/time.Duration(repeat))
     fmt.Printf("Average UPDATE latency: %v\n", totalUpdateTime/time.Duration(repeat))
-    fmt.Printf("Average GET latency: %v\n", totalGetTime/(2*time.Duration(repeat)))
+    fmt.Printf("Average GET latency: %v\n", totalGetTime/time.Duration(repeat))
     fmt.Printf("Average DEL latency: %v\n", totalDelTime/time.Duration(repeat))
+    fmt.Printf("Average PUBLISH latency: %v\n", totalPubTime/time.Duration(repeat))
 }
