@@ -1,0 +1,5 @@
+{
+    "amount": "{{data.test_data_csv.amount}}",
+	"base": "{{data.test_data_csv.base_currency}}",
+	"target": "{{data.test_data_csv.target_currency}}"
+}
